@@ -19,20 +19,14 @@ Inspired by a free coursera course on mobile robotics (https://www.coursera.org/
 > It's advised to pay attantion to the motor placements and cable orientation. I soldered the wires on the motor pins in such a way, that the yellow wires on both motors correspond to the positive polarity when robot moves forwards.
 
 ## Motor Control
+The kit consists of 2 DC motors and 2 encoder disks. We will use the L293D H-bridge to drive the two motors with varying speed and the photoelectric sensors to count the rotations of the wheels.
 
-### Stage 1 -- Controlling Motor Velocity Using a Potenciometer
-The easiest velocity control we can achieve is using the potenciometer to control the voltage applied to the motors. This allows us to drive robot forwards with varying velocity, but not backwards.
+The [L293's datasheet](datasheets/L293_H-Bridge.pdf) helps us understand how to use the H-Bridge. For the connection of the H-Bridge with Arduino UNO, I used the scheme shown below. The corresponding driver for the motors is located at [src/main/drive_motors.h](src/main/drive_motors.h).
 
-![stage1 scheme](img/scheme_stage1_potenciometer.png)
 
-### Stage 2 -- PWM
+![stage1 scheme](img/H-bridge+arduino.png)
 
-In this stage I connect both wheels to the same PWM signal that will be able to move wheels forward with varying velocity (but not backwards).
 
-To connect the H-bridge to the Arduino I used the [L293's datasheet](datasheets/L293_H-Bridge.pdf) and to use the Low drop-out 5 V voltage regulator I read [this datasheet](datasheets/LDO-L78S05CV.pdf). The used code that I loaded into the Arduino to make the PWM work can be found under the `src/stage2_pwm` folder. The analog pin A0 is connected to the potenciometer indroduced in previous stage. By adjusting the potenciometer resistance, the wheel velocity is changing. Because I only have a primitive hand-held multimeter to my disposal I used the A1 analog pin as a kind of probe to see what is happaning on which pin.
+## Resources
 
-![stage1 scheme](img/scheme_stage2_h-bridge.png)
-
-![stage1 scheme](img/scheme_stage2_LDO.png)
-
-### Stage 3 -- H-Bridge
+[1] [Electronics Cookbook: Practical Electronic Recipes with Arduino and Raspberry Pi](https://books.google.cz/books?id=WqmSDgAAQBAJ&)
