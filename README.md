@@ -26,7 +26,19 @@ The [L293's datasheet](datasheets/L293_H-Bridge.pdf) helps us understand how to 
 
 ![stage1 scheme](img/H-bridge+arduino.png)
 
+## Motor Speed Sensor
+For the rotary encoders the Infrared slotted optical sensors are used. Those sensors contain the Schmitt-Trigger Invertor in their circuit and work very well for our usecase.
+
+Schematic of the module:
+![optical encoder schematic](img/H206_module_schematic.png)
+![optical encoder](img/H206_module.jpg)
+
+Schematic connected to Arduino
+![optical connected to Arduino](img/H206_module+arduino.png)
+
 
 ## Resources
 
 [1] [Electronics Cookbook: Practical Electronic Recipes with Arduino and Raspberry Pi](https://books.google.cz/books?id=WqmSDgAAQBAJ&)
+
+[2] [Electronics Cookbook's GitHub](https://github.com/simonmonk/electronics_cookbook)
