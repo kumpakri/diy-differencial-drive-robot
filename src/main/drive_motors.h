@@ -1,13 +1,24 @@
+/* Constants Definition */
 const int motor1SpeedPin = 6;
 const int motor2SpeedPin = 5;
 
-const int motor1DirAPin = 4;
-const int motor1DirBPin = 7;
-const int motor2DirAPin = 2;
-const int motor2DirBPin = 3;
+const int motor1DirAPin = 7;
+const int motor1DirBPin = 8;
+const int motor2DirAPin = 9;
+const int motor2DirBPin = 10;
 
+/* Variables */
+int flagMotor1FWD = 1;
+int flagMotor2FWD = 1;
 
-void setup_motors()
+/* Functions Declaration */
+void setupMotors();
+void setVelocity(int rightWheelSpeed, int leftWheelSpeed);
+int getFlagMotorRightFWD();
+int getFlagMotorLeftFWD();
+
+/* Implementation */
+void setupMotors()
 {
   pinMode(motor1SpeedPin, OUTPUT);
   pinMode(motor2SpeedPin, OUTPUT);
@@ -15,32 +26,38 @@ void setup_motors()
   pinMode(motor1DirBPin, OUTPUT);
   pinMode(motor2DirAPin, OUTPUT);
   pinMode(motor2DirBPin, OUTPUT);
-  Serial.begin(9600);
 }
 
-void set_velocity(int right_wheel_speed, int left_wheel_speed)
+void setVelocity(int rightWheelSpeed, int leftWheelSpeed)
 {
   /*
   * Accepts PWM velocity value 0-255 for forward movement
   * and (-255)-0 for backward movement.
   */
-  if(right_wheel_speed >= 0)
+  if(rightWheelSpeed >= 0)
   { // rotate forward (clockwise)
     digitalWrite(motor1DirAPin, HIGH); 
     digitalWrite(motor1DirBPin, LOW);
+    flagMotor1FWD = 1;
   } else { // rotate backward (counter-clockwise)
     digitalWrite(motor1DirAPin, LOW); 
     digitalWrite(motor1DirBPin, HIGH);
+    flagMotor1FWD = 0;
   }
 
-  if(left_wheel_speed >= 0)
-  { // rotate forward (clockwise)
+  if(leftWheelSpeed >= 0)
+  { // rotate forward (counter-clockwise)
     digitalWrite(motor2DirAPin, HIGH); 
     digitalWrite(motor2DirBPin, LOW);
-  } else { // rotate backward (counter-clockwise)
+    flagMotor2FWD = 1;
+  } else { // rotate backward (clockwise)
     digitalWrite(motor2DirAPin, LOW); 
     digitalWrite(motor2DirBPin, HIGH);
+    flagMotor2FWD = 0;
   }
-  analogWrite(motor1SpeedPin, abs(right_wheel_speed));
-  analogWrite(motor2SpeedPin, abs(left_wheel_speed));
+  analogWrite(motor1SpeedPin, abs(rightWheelSpeed));
+  analogWrite(motor2SpeedPin, abs(leftWheelSpeed));
 }
+
+int getFlagMotorRightFWD() {return flagMotor1FWD;}
+int getFlagMotorLeftFWD() {return flagMotor2FWD;}
