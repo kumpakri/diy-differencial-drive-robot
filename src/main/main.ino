@@ -14,7 +14,7 @@
 * | 12 | distanceSensorTrigPin |
 * | 13 | distanceSensorEchoPin |
 */
-
+#include <string.h>
 #include "drive_motors.h"
 #include "encoder.h"
 #include "distance_sensor.h"

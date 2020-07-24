@@ -1,4 +1,3 @@
-#include <string.h>
 /* Constants Definition */
 const int encoderRightPin = 2;
 const int encoderLeftPin = 3;
