@@ -24,6 +24,8 @@ float getDistance()
   delayMicroseconds(200); 
   unsigned long duration = pulseIn(distanceSensorEchoPin, HIGH, 100000) + 200;
   float distance = duration * speedOfSoundCentiMetersPerMicrosecond / 2;
+  // sensor returns 3.2 cm if it cannot sense anything
+  if(distance < 4) distance = 400;
   return distance;
 }
 

@@ -2,6 +2,9 @@
 
 Inspired by a free coursera course on mobile robotics (https://www.coursera.org/learn/mobile-robot/), I'm building a differential drive robot from scratch. My goal is to test different control strategies on this robot.
 
+![](img/final_hw_front.jpg)
+![](img/final_hw_top.jpg)
+
 ## Building the Robot
 
 ### Robot parts
@@ -13,7 +16,8 @@ Inspired by a free coursera course on mobile robotics (https://www.coursera.org/
 - caster wheel
 - H-bridge L-293
 - 2 photoelectric sensors
-- 5 ultrasonic distance sensors SR04
+- 3 ultrasonic distance sensors SR04
+- 1 2-channel multiplexer/demultiplexer 74HC4052
 - Arduino UNO
 
 > It's advised to pay attantion to the motor placements and cable orientation. I soldered the wires on the motor pins in such a way, that the yellow wires on both motors correspond to the positive polarity when robot moves forwards.
@@ -24,12 +28,14 @@ ARDUINO PINS USAGE
 |:----|:----------------------|
 | D2  | encoderRightPin       |
 | D3  | encoderLeftPin        |
+| D4  | sensorSelect0         |
 | D5  | motor2SpeedPin        |
 | D6  | motor1SpeedPin        |
 | D7  | motor1DirAPin         |
 | D8  | motor1DirBPin         |
 | D9  | motor2DirAPin         |
 | D10 | motor2DirBPin         |
+| D11 | sensorSelect1         |
 | D12 | distanceSensorTrigPin |
 | D13 | distanceSensorEchoPin |
 
@@ -44,11 +50,11 @@ The [L293's datasheet](datasheets/L293_H-Bridge.pdf) helps us understand how to 
 ## Motor Speed Sensor
 For the rotary encoders the Infrared slotted optical sensors are used. Those sensors contain the Schmitt-Trigger Invertor in their circuit and work very well for our usecase.
 
-Schematic of the module:
+### Schematic of the module:
 ![optical encoder schematic](img/H206_module_schematic.png)
 ![optical encoder](img/H206_module.jpg)
 
-Schematic connected to Arduino
+### Schematic connected to Arduino
 ![optical connected to Arduino](img/H206_module+arduino.png)
 
 ## Distance sensor
@@ -60,8 +66,14 @@ The sensor module has 4 pins: Vcc. Gnd, Trig and Echo. A 10 ms long pulse needs 
 
 distance = speed-of-sound * delay / 2
 
-The schematics of HC-SR04 connected to arduino UNO board:
+### The schematic of HC-SR04 connected to arduino UNO board:
 ![distance sensor + arduino](img/HC-SR04+arduino.png)
+
+## Multiple Distance Sensors
+We want to use 3 HC-SR04 ultrasonic sensors -- one looking right ahead, one looking slightly to the right and one looking slightly to the left, but only 4 digital pins are left on the Arduino UNO board. We use the 2-channel multiplexer/demultiplexer IC 74HC4052 (for more details see the [datasheet](datasheets/74HC4052.pdf)) to serve 3 sensors using only 2 data pins (distanceSensorTrigPin and distanceSensorEchoPin) and 2 select pins (sensorSelect0 and sensorSelect1).
+
+### Schematic
+![](img/74HC4052+HC-SR04+arduino.png)
 
 ## Resources
 
