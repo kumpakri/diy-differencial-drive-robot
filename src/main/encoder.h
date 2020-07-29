@@ -5,12 +5,12 @@ const int encoderLeftPin = 3;
 const unsigned int slotsPerRev = 20;
 const unsigned long updatePeriod = 1000; //ms
 
+const double pi = 3.1415;
+
 /* Variables */
 long pulseCountEncoderRight = 0;
 long pulseCountEncoderLeft = 0;
-unsigned long lastUpdateTimeEncoderRight = 0;
-unsigned long lastUpdateTimeEncoderLeft = 0;
-
+unsigned long lastUpdateTimeEncoders = 0;
 float rpmEncoderRight = 0;
 float rpmEncoderLeft = 0;
 
@@ -18,10 +18,9 @@ float rpmEncoderLeft = 0;
 void setupEncoders();
 void incPulseCountEncoderRight();
 void incPulseCountEncoderLeft();
-void updateRPMEncoderRight();
-void updateRPMEncoderLeft();
-int getRPMRightWheel();
-int getRPMLeftWheel();
+void updateRPMEncoders();
+struct wheelProperty getRPM();
+struct wheelProperty getRadiansPerSecond();
 
 /* Implementation */
 void setupEncoders()
@@ -52,33 +51,36 @@ void incPulseCountEncoderLeft()
   }
 }
 
-void updateRPMEncoderRight()
+void updateEncoders()
 {
   long now = millis();
-  if(now > lastUpdateTimeEncoderRight + updatePeriod)  
+  if(now > lastUpdateTimeEncoders + updatePeriod)  
   {
-      lastUpdateTimeEncoderRight = now;
+      lastUpdateTimeEncoders = now;
       rpmEncoderRight = float(pulseCountEncoderRight) * 60000.0 / (20.0 * updatePeriod);
-      pulseCountEncoderRight = 0;
-      //String msg("right: ");
-      //msg += rpmEncoderRight;
-      //Serial.println(msg);
-  }
-}
-
-void updateRPMEncoderLeft()
-{
-  long now = millis();
-  if(now > lastUpdateTimeEncoderLeft + updatePeriod)  
-  {
-      lastUpdateTimeEncoderLeft = now;
       rpmEncoderLeft = float(pulseCountEncoderLeft) * 60000.0 / (20.0 * updatePeriod);
+      pulseCountEncoderRight = 0;
       pulseCountEncoderLeft = 0;
-      //String msg("left: ");
-      //msg += rpmEncoderLeft;
-      //Serial.println(msg);
   }
 }
 
-int getRPMRightWheel() { return rpmEncoderRight;}
-int getRPMLeftWheel() { return rpmEncoderLeft;}
+struct wheelProperty getRPM() 
+{ 
+  struct wheelProperty rpm;
+  rpm.right = rpmEncoderRight;
+  rpm.left = rpmEncoderLeft;
+  
+  return rpm;
+}
+
+struct wheelProperty getRadiansPerSecond()
+/*
+ * Returns actaul speed of the wheels in radians per second.
+*/
+{
+  struct wheelProperty radiansPerSecond;
+  radiansPerSecond.right = getRPM().right / (2 * pi * 60);
+  radiansPerSecond.left = getRPM().left / (2 * pi * 60);
+
+  return radiansPerSecond;
+}
